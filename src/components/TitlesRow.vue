@@ -2,7 +2,7 @@
   <div class="titles-row">
     <div class="title-category">{{ categoryName }}</div>
     <div class="carousel">
-      <ul :style="{ left: _left + '%'}">
+      <ul :style="{ left: _left + 'vw'}">
         <template v-for="title in titles">
           <li>
             <div class="image-div">
@@ -51,7 +51,7 @@ export default {
   // },
   computed: {
     _left: function () {
-      return -89 * this.titlesPosition
+      return -88.5 * this.titlesPosition
     }
   }
 }
@@ -84,9 +84,10 @@ $x-large: "(min-width: 1500px)";
     //padding: 0 2%;
     //margin: 0 0 1.5em;
     padding: 0;
-    margin: 0 5.5%;
-    display: flex;
-    width: 196%;
+    margin: 0 5vw;
+    //display: flex;
+    //width: 196%;
+    white-space: nowrap;
     position: relative;
     @media #{$large} {
       width: 172%;
@@ -96,9 +97,10 @@ $x-large: "(min-width: 1500px)";
     }
     li {
       display: inline-block;
+      width: 16.9vw;
       box-shadow: 0 0 10px 2px rgba(0,0,0,0.3), 0 0 10px 2px rgba(0,0,0,0.1);
       max-width: 220px;
-      margin: 0 0.3%;
+      margin: 0 0.4vw;
       cursor: pointer;
       .image-div {
         img {
@@ -120,7 +122,6 @@ $x-large: "(min-width: 1500px)";
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 4.7%;
     background-color: #ccc;
     opacity: 0.3;
     cursor: pointer;
@@ -142,10 +143,12 @@ $x-large: "(min-width: 1500px)";
     }
   }
   .titles-left {
+    width: 4.6vw;
     left: 0;
   }
   .titles-right {
-    right: 0; 
+    width: 6.2vw;
+    left: 93.8vw;
   }
 }
 </style>

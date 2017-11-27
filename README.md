@@ -1,4 +1,4 @@
-# home-search
+# MovieDB
 
 > A Vue.js project
 

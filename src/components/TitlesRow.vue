@@ -25,10 +25,10 @@
           </li>
         </template>
       </ul>
-      <div v-show="titlesPosition > 0" class="titles-left" @click="titlesPosition -= 1">
+      <div v-show="titlesPosition > 0" class="titles-left" @click="titlesLeft">
         <icon name="chevron-left"></icon>
       </div>
-      <div class="titles-right" @click="titlesPosition += 1">
+      <div v-show="_titlesRight > 0" class="titles-right" @click="titlesRight">
         <icon name="chevron-right"></icon>
       </div>
     </div>
@@ -53,15 +53,35 @@ export default {
       titlesPosition: 0
     }
   },
-  // methods: {
-  //   titlesRight: function () {
-  //     alert('hello')
-  //   }
-  // },
   computed: {
+    _titlesCount () {
+      return Object.keys(this.titles).length
+    },
+    _titlesRight () {
+      return this._titlesCount - this.titlesPosition - 5
+    },
     _left: function () {
-      return -88.5 * this.titlesPosition
+      return -88.5 * this.titlesPosition / 5
     }
+  },
+  methods: {
+    titlesLeft: function () {
+      if (this.titlesPosition >= 5) {
+        this.titlesPosition -= 5
+      } else {
+        this.titlesPosition -= this.titlesPosition
+      }
+    },
+    titlesRight: function () {
+      if (this._titlesRight >= 5) {
+        this.titlesPosition += 5
+      } else {
+        this.titlesPosition += this._titlesRight
+      }
+    }
+  },
+  created () {
+
   }
 }
 </script>

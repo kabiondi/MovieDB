@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <div class="hero">
+      <div class="brand">MovieDb</div>
       <header class="menu">
         <ul>
           <li :class="{ active: activeHeroHeader === 'movies' }" @click="selectHeroHeader('movies')">Movies</li>
@@ -9,15 +10,6 @@
           <li :class="{ active: activeHeroHeader === 'news' }" @click="selectHeroHeader('news')">News</li>
         </ul>
       </header>
-<!--       <p style="position:absolute;color:#fff;background-color:#666;padding-left:5px;padding-right:5px;left:20px;top:100px;">search</p>
-      <p style="position:absolute;color:#fff;background-color:#666;padding-left:5px;padding-right:5px;left:20px;top:130px;">horizontal scroll</p>
-      <p style="position:absolute;color:#fff;background-color:#666;padding-left:5px;padding-right:5px;left:20px;top:160px">genre</p>
-      <p style="position:absolute;color:#fff;background-color:#666;padding-left:5px;padding-right:5px;left:20px;top:190px">search</p>
-      <p style="position:absolute;color:#fff;background-color:#666;padding-left:5px;padding-right:5px;left:20px;top:220px">menu</p>
-      <p style="position:absolute;color:#fff;background-color:#666;padding-left:5px;padding-right:5px;left:20px;top:250px">footer</p>
-      <p style="position:absolute;color:#fff;background-color:#666;padding-left:5px;padding-right:5px;left:20px;top:280px">icons</p>
-      <p style="position:absolute;color:#fff;background-color:#666;padding-left:5px;padding-right:5px;left:20px;top:310px">My List</p> -->
-
 
       <div class="hero-details">
         <h1>Coco</h1>
@@ -50,14 +42,6 @@
     </div>
     <footer class="footer">
       <div class="footer-fade"></div>
-      <ul>
-        <li>Careers</li>
-        <li>Help Center</li>
-        <li>Terms of Use</li>
-        <li>Contact Us</li>
-        <li>Privacy</li>
-        <li>About</li>
-      </ul>
     </footer>
   </div>
 </template>
@@ -97,8 +81,8 @@ export default {
       self.titleData[categoryObj.name] = {}
       categoryObj.titles.forEach(function (title) {
         imdb.get(title,
-          { apiKey: '4162605e',
-          // { apiKey: 'ac6f6f7b',
+          // { apiKey: '4162605e',
+          { apiKey: 'ac6f6f7b',
             timeout: 30000
           }).then(function (response) {
             self.titleData[categoryObj.name][title] = response
@@ -114,9 +98,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 // fonts
-@import url('https://fonts.googleapis.com/css?family=Roboto|Assistant|Yantramanav');
+@import url('https://fonts.googleapis.com/css?family=Roboto|Assistant|Yantramanav|Bitter');
 
 // variables
+$hero-gold: #da3535;
+$light-gold: #f3c532;
+$gold: #e2b010;
 $light-grey: #eee;
 
 @mixin transition($transition...) {
@@ -152,6 +139,20 @@ ul {
   width: 100%;
   font-family: 'Roboto';
   color: #fff;
+  .brand {
+    position: absolute;
+    z-index: 2;
+    top: 0.8em;
+    left: 1em;
+    color: $gold;
+    color: $light-gold;
+    color: $hero-gold;
+    //color: red;
+    //color: #fff;
+    font-family: 'Bitter';
+    font-size: 1.7em;
+    font-weight: 700;
+  }
   header {
     position: absolute;
     left: 0;
@@ -160,13 +161,33 @@ ul {
     z-index: 1;
     ul {
       li {
+        position: relative;
         text-transform: uppercase;
         font-family: 'Yantramanav';
         font-size: 0.9em;
         font-weight: 600;
-        padding: 1em 0.6em;
-        &.active {
+        margin: 1em 0.6em;
+        @include transition(all, 0.2s)
+        &:after {
+          position: absolute;
+          content: '';
+          display: block;
+          width: 0;
+          height: 2px;
+          background-color: $hero-gold;
+          left: 50%;
+          @include transform(translateX(-50%));
+          @include transition(all, 0.2s)
+        }
+        &.active,
+        &:hover {
           color: red;
+          color: $gold;
+          color: $light-gold;
+          color: $hero-gold;
+          &:after {
+            width: 100%;
+          }
         }
       }
     }
@@ -195,17 +216,26 @@ ul {
       }
     }
     .trailer-button {
+      position: relative;
       display: inline-block;
-      border: 1px solid #fff;
+      color: #fff;
+      font-size: 0.8em;
+      font-weight: 700;
+      //border: 1px solid #fff;
+      background-color: $hero-gold;
       border-radius: 2em;
-      padding: 0.5em;
+      padding: 1em 2.5em 1em 1em;
+      cursor: pointer;
       span {
         margin-right: 0.5em;
       }
       .fa-icon {
         //display: inline-block;
-        //height: 1.2em;
-        //width: 1.2em;
+        position: absolute;
+        top: 50%;
+        @include transform(translateY(-50%))
+        height: 1.7em;
+        width: 1.7em;
         //@include transform(translateY(12%))
       }
     }
@@ -238,13 +268,10 @@ ul {
           color: #666a66;
           border-bottom: 2px solid rgba(100, 100, 100, 0);
           @include transition(border-color 0.5s, color 0.5s)
-          &.active {
-            color: red;
-            border-color: rgba(100, 100, 100, 1);
-          }
+          &.active,
           &:hover {
+            color: #333;
             border-color: rgba(100, 100, 100, 1);
-            color: rgba(100, 100, 100, 1);
           }
         }
       }
@@ -281,9 +308,6 @@ footer {
     top: 0;
     width: 100%;
     background: linear-gradient($light-grey, white)
-  }
-  ul {
-    color: #444;
   }
 }
 </style>

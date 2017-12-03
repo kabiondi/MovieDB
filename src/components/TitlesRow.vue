@@ -114,10 +114,10 @@ $greyC: #cccccc;
 }
 
 .titles-row {
-  font-family: 'Assistant';
+  font-family: 'Roboto';
   font-weight: 600;
   font-size: 20px;
-  color: $grey6;
+  color: $grey7;
 }
 .title-category {
   padding: 0.2em 5vw;

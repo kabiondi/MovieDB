@@ -42,12 +42,19 @@
     </div>
     <footer class="footer">
       <div class="footer-fade"></div>
+      <loader></loader>
+      <div class="footer-info">
+        <div class="info-left">MovieDb</div>
+        <div class="info-right"><icon name="copyright"></icon>2015 - 2017 MovieDb , inc.</div>
+      </div>
+      <div class="return" @click="returnToMenu">Return to menu</div>
     </footer>
   </div>
 </template>
 
 <script>
 import TitlesRow from '@/components/TitlesRow'
+import Loader from '@/components/Loader'
 import titlesByCategory from '@/data/titlesByCategory.js'
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
@@ -58,6 +65,7 @@ export default {
   name: 'Main',
   components: {
     'titles-row': TitlesRow,
+    'loader': Loader,
     'Icon': Icon
   },
   data () {
@@ -73,6 +81,10 @@ export default {
     },
     selectHeroSub: function (tab) {
       this.activeHeroSub = tab
+    },
+    returnToMenu: function () {
+      document.body.scrollTop = 0
+      document.documentElement.scrollTop = 0
     }
   },
   created: function () {
@@ -98,10 +110,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 // fonts
-@import url('https://fonts.googleapis.com/css?family=Roboto|Assistant|Yantramanav|Bitter');
+@import url('https://fonts.googleapis.com/css?family=Roboto|Assistant|Yantramanav|Modak|Poppins');
 
 // variables
-$hero-gold: #da3535;
+$brand-red: #da3535;
+$brand-red-dark: #b32020;
 $light-gold: #f3c532;
 $gold: #e2b010;
 $light-grey: #eee;
@@ -137,21 +150,17 @@ ul {
 .hero {
   position: relative;
   width: 100%;
-  font-family: 'Roboto';
+  font-family: 'Poppins';
   color: #fff;
   .brand {
     position: absolute;
     z-index: 2;
     top: 0.8em;
     left: 1em;
-    color: $gold;
-    color: $light-gold;
-    color: $hero-gold;
-    //color: red;
-    //color: #fff;
-    font-family: 'Bitter';
-    font-size: 1.7em;
-    font-weight: 700;
+    color: $brand-red;
+    font-family: 'Modak';
+    font-size: 1.8em;
+    cursor: pointer;
   }
   header {
     position: absolute;
@@ -163,28 +172,26 @@ ul {
       li {
         position: relative;
         text-transform: uppercase;
-        font-family: 'Yantramanav';
-        font-size: 0.9em;
+        font-family: 'Poppins';
+        font-size: 0.8em;
         font-weight: 600;
         margin: 1em 0.6em;
         @include transition(all, 0.2s)
         &:after {
           position: absolute;
+          margin-top: 3px;
           content: '';
           display: block;
           width: 0;
           height: 2px;
-          background-color: $hero-gold;
+          background-color: $brand-red;
+          background-color: #dab847;
           left: 50%;
           @include transform(translateX(-50%));
-          @include transition(all, 0.2s)
+          @include transition(all, 0.3s)
         }
         &.active,
         &:hover {
-          color: red;
-          color: $gold;
-          color: $light-gold;
-          color: $hero-gold;
           &:after {
             width: 100%;
           }
@@ -210,8 +217,9 @@ ul {
     ul {
       margin-top: 0;
       li {
-        font-family: 'Assistant';
-        font-weight: 600;
+        font-family: 'Poppins';
+        font-size: 0.7em;
+        font-weight: 800;
         margin: 0.4em;
       }
     }
@@ -221,22 +229,23 @@ ul {
       color: #fff;
       font-size: 0.8em;
       font-weight: 700;
-      //border: 1px solid #fff;
-      background-color: $hero-gold;
+      background-color: $brand-red;
       border-radius: 2em;
       padding: 1em 2.5em 1em 1em;
       cursor: pointer;
+      @include transition(all, 0.15s);
       span {
         margin-right: 0.5em;
       }
+      &:hover {
+        background-color: $brand-red-dark;
+      }
       .fa-icon {
-        //display: inline-block;
         position: absolute;
         top: 50%;
         @include transform(translateY(-50%))
         height: 1.7em;
         width: 1.7em;
-        //@include transform(translateY(12%))
       }
     }
   }
@@ -300,14 +309,51 @@ ul {
 footer {
   position: relative;
   padding-top: 4em;
-  height: 14em;
   border: 1px solid $light-grey;
+  font-family: 'Poppins';
   .footer-fade {
     position: absolute;
     height: 4em;
     top: 0;
     width: 100%;
     background: linear-gradient($light-grey, white)
+  }
+  .footer-info {
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    color: #bbb;
+    .info-left {
+      font-family: 'Modak';
+      font-size: 1.5em;
+      padding-bottom: 0.2em;
+    }
+    .info-right {
+      position: relative;
+      align-self: center;
+      font-weight: 700;
+      padding-left: 20px;
+      .fa-icon {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        @include transform(translateY(-50%))
+      }
+    }
+  }
+  .return {
+    padding: 18px 0;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    font-family: 'Poppins';
+    font-weight: 700;
+    color: $light-gold;
+    border-top: 1px solid #eee;
+    cursor: pointer;
+    &:hover {
+      color: $gold;
+    }
   }
 }
 </style>

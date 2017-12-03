@@ -36,8 +36,11 @@
     <div class="titles">
       <div class="titles-transition"></div>
 
-      <template v-for="titles, categoryName in titleData">
+<!--       <template v-for="titles, categoryName in titleData">
         <titles-row :titles="titles" :categoryName="categoryName"></titles-row>
+      </template> -->
+      <template v-for="category in titlesByCategory">
+        <titles-row :category="category"></titles-row>
       </template>
     </div>
     <footer class="footer">
@@ -59,7 +62,7 @@ import titlesByCategory from '@/data/titlesByCategory.js'
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
 
-const imdb = require('imdb-api')
+// const imdb = require('imdb-api')
 
 export default {
   name: 'Main',
@@ -70,7 +73,8 @@ export default {
   },
   data () {
     return {
-      titleData: {},
+      // titleData: {},
+      titlesByCategory: titlesByCategory,
       activeHeroHeader: 'movies',
       activeHeroSub: 'theaters'
     }
@@ -88,21 +92,21 @@ export default {
     }
   },
   created: function () {
-    const self = this
-    titlesByCategory.forEach(function (categoryObj) {
-      self.titleData[categoryObj.name] = {}
-      categoryObj.titles.forEach(function (title) {
-        imdb.get(title,
-          // { apiKey: '4162605e',
-          { apiKey: 'ac6f6f7b',
-            timeout: 30000
-          }).then(function (response) {
-            self.titleData[categoryObj.name][title] = response
-          })
-        .catch(console.log)
-      })
-    })
-    console.log(self.titleData)
+    // const self = this
+    // titlesByCategory.forEach(function (categoryObj) {
+    //   self.titleData[categoryObj.name] = {}
+    //   categoryObj.titles.forEach(function (title) {
+    //     imdb.get(title,
+    //       // { apiKey: '4162605e',
+    //       { apiKey: 'ac6f6f7b',
+    //         timeout: 30000
+    //       }).then(function (response) {
+    //         self.titleData[categoryObj.name][title] = response
+    //       })
+    //     .catch(console.log)
+    //   })
+    // })
+    // console.log(self.titleData)
   }
 }
 </script>

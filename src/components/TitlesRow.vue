@@ -1,9 +1,9 @@
 <template>
   <div class="titles-row">
-    <div class="title-category">{{ categoryName }}</div>
+    <div class="title-category">{{ category.name }}</div>
     <div class="carousel">
       <ul :style="{ left: _left + 'vw'}">
-        <template v-for="title in titles">
+        <template v-for="title in titleData">
           <li>
             <div class="image-div">
               <div class="play">
@@ -39,23 +39,25 @@
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
 
+const imdb = require('imdb-api')
+
 export default {
   name: 'TitlesRow',
   components: {
     'Icon': Icon
   },
   props: [
-    'categoryName',
-    'titles'
+    'category'
   ],
   data () {
     return {
+      titleData: [],
       titlesPosition: 0
     }
   },
   computed: {
     _titlesCount () {
-      return Object.keys(this.titles).length
+      return Object.keys(this.titleData).length
     },
     _titlesRight () {
       return this._titlesCount - this.titlesPosition - 5
@@ -78,10 +80,39 @@ export default {
       } else {
         this.titlesPosition += this._titlesRight
       }
+    },
+    getTitles: function () {
+      const self = this
+      this.category.titles.forEach(function (title) {
+        imdb.get(title,
+          // { apiKey: '4162605e',
+          { apiKey: 'ac6f6f7b',
+            timeout: 30000
+          }).then(function (response) {
+            self.titleData.push(response)
+          })
+        .catch(console.log)
+      })
     }
   },
   created () {
-
+    // const self = this
+    // titlesByCategory.forEach(function (categoryObj) {
+    //   self.titleData[categoryObj.name] = {}
+    //   categoryObj.titles.forEach(function (title) {
+    //     imdb.get(title,
+    //       // { apiKey: '4162605e',
+    //       { apiKey: 'ac6f6f7b',
+    //         timeout: 30000
+    //       }).then(function (response) {
+    //         self.titleData[categoryObj.name][title] = response
+    //       })
+    //     .catch(console.log)
+    //   })
+    // })
+    // console.log(self.titleData)
+    this.getTitles()
+    console.log(this.titleData)
   }
 }
 </script>

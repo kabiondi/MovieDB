@@ -56,27 +56,33 @@ export default {
     }
   },
   computed: {
+    _titlesWidth () {
+      let width = document.documentElement.clientWidth
+      if (width > 1250) { return 6 } else
+      if (width > 800) { return 5 } else
+      if (width <= 800) { return 4 }
+    },
     _titlesCount () {
       return Object.keys(this.titleData).length
     },
     _titlesRight () {
-      return this._titlesCount - this.titlesPosition - 5
+      return this._titlesCount - this.titlesPosition - this._titlesWidth
     },
     _left: function () {
-      return -88.5 * this.titlesPosition / 5
+      return -88.5 * this.titlesPosition / this._titlesWidth
     }
   },
   methods: {
     titlesLeft: function () {
-      if (this.titlesPosition >= 5) {
-        this.titlesPosition -= 5
+      if (this.titlesPosition >= this._titlesWidth) {
+        this.titlesPosition -= this._titlesWidth
       } else {
         this.titlesPosition -= this.titlesPosition
       }
     },
     titlesRight: function () {
-      if (this._titlesRight >= 5) {
-        this.titlesPosition += 5
+      if (this._titlesRight >= this._titlesWidth) {
+        this.titlesPosition += this._titlesWidth
       } else {
         this.titlesPosition += this._titlesRight
       }
@@ -96,21 +102,6 @@ export default {
     }
   },
   created () {
-    // const self = this
-    // titlesByCategory.forEach(function (categoryObj) {
-    //   self.titleData[categoryObj.name] = {}
-    //   categoryObj.titles.forEach(function (title) {
-    //     imdb.get(title,
-    //       // { apiKey: '4162605e',
-    //       { apiKey: 'ac6f6f7b',
-    //         timeout: 30000
-    //       }).then(function (response) {
-    //         self.titleData[categoryObj.name][title] = response
-    //       })
-    //     .catch(console.log)
-    //   })
-    // })
-    // console.log(self.titleData)
     this.getTitles()
     console.log(this.titleData)
   }
@@ -127,8 +118,8 @@ $grey3: #333333;
 $grey6: #666666;
 $grey7: #777777;
 $greyC: #cccccc;
-//$large: "(min-width: 1250px)";
-//$x-large: "(min-width: 1500px)";
+$break-large: "1250px";
+$break-small: "850px";
 
 @mixin transform($transform...) {
   -moz-transform: $transform;
@@ -171,6 +162,12 @@ $greyC: #cccccc;
       max-width: 220px;
       margin: 0 0.4vw;
       cursor: pointer;
+      @media screen and (min-width: $break-large) {
+        width: 13.95vw;
+      }
+      @media screen and (max-width: $break-small) {
+        width: 21.325vw;
+      }
       @include transition(all, 0.2s)
       .image-div {
         position: relative;
@@ -193,6 +190,12 @@ $greyC: #cccccc;
           width: 100%;
           height: 24.8vw;
           display: flex;
+          @media screen and (min-width: $break-large) {
+            height: 20.47vw;
+          }
+          @media screen and (max-width: $break-small) {
+            height: 31.29vw;
+          }
         }
       }
       .details {

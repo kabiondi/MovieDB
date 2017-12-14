@@ -24,10 +24,13 @@
       <div class="menu bottom">
         <div class="inner">
           <ul>
+            <!-- <li :class="{ active: activeHeroSub === 'suggested' }" @click="selectHeroSub('suggested')">Suggested</li> -->
             <li :class="{ active: activeHeroSub === 'theaters' }" @click="selectHeroSub('theaters')">In Theaters</li>
             <li :class="{ active: activeHeroSub === 'coming' }" @click="selectHeroSub('coming')">Coming Soon</li>
-            <li :class="{ active: activeHeroSub === 'tv' }" @click="selectHeroSub('tv')">TV Series</li>
-            <li :class="{ active: activeHeroSub === 'trailers' }" @click="selectHeroSub('trailers')">Trailers</li>
+            <li :class="{ active: activeHeroSub === 'mylist' }" @click="selectHeroSub('mylist')">My List</li>
+            <li :class="{ active: activeHeroSub === 'suggested' }" @click="selectHeroSub('suggested')">Suggested</li>
+            <!-- <li :class="{ active: activeHeroSub === 'tv' }" @click="selectHeroSub('tv')">TV Series</li> -->
+            <!-- <li :class="{ active: activeHeroSub === 'trailers' }" @click="selectHeroSub('trailers')">Trailers</li> -->
             <li :class="{ active: activeHeroSub === 'more' }" @click="selectHeroSub('more')">More</li>
           </ul>
         </div>
@@ -41,6 +44,10 @@
       </template> -->
       <template v-for="category in titlesByCategory">
         <titles-row :category="category"></titles-row>
+      </template>
+
+      <template v-for="category, index in additionalTitles">
+        <titles-row v-if="index < rowsAdded" :category="category"></titles-row>
       </template>
     </div>
     <footer class="footer">
@@ -59,6 +66,7 @@
 import TitlesRow from '@/components/TitlesRow'
 import Loader from '@/components/Loader'
 import titlesByCategory from '@/data/titlesByCategory.js'
+import additionalTitles from '@/data/additionalTitles.js'
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
 
@@ -73,8 +81,9 @@ export default {
   },
   data () {
     return {
-      // titleData: {},
+      rowsAdded: 0,
       titlesByCategory: titlesByCategory,
+      additionalTitles: additionalTitles,
       activeHeroHeader: 'movies',
       activeHeroSub: 'theaters'
     }
@@ -89,24 +98,21 @@ export default {
     returnToMenu: function () {
       document.body.scrollTop = 0
       document.documentElement.scrollTop = 0
+    },
+    addRow: function () {
+      let self = this
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        setTimeout(function () {
+          self.rowsAdded += 1
+        }, 400)
+      }
     }
   },
   created: function () {
-    // const self = this
-    // titlesByCategory.forEach(function (categoryObj) {
-    //   self.titleData[categoryObj.name] = {}
-    //   categoryObj.titles.forEach(function (title) {
-    //     imdb.get(title,
-    //       // { apiKey: '4162605e',
-    //       { apiKey: 'ac6f6f7b',
-    //         timeout: 30000
-    //       }).then(function (response) {
-    //         self.titleData[categoryObj.name][title] = response
-    //       })
-    //     .catch(console.log)
-    //   })
-    // })
-    // console.log(self.titleData)
+    window.addEventListener('scroll', this.addRow)
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.addRow)
   }
 }
 </script>

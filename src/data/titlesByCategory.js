@@ -25,7 +25,10 @@ export default [
       'The Wizard of Oz',
       'On the Waterfront',
       'Casablanca',
-      'Gone With the Wind'
+      'Gone With the Wind',
+      'Annie Hall',
+      'Goodfellas',
+      'The Shining'
     ]
   },
   {
@@ -40,7 +43,9 @@ export default [
       'Girls Trip',
       'Cars 3',
       'Trainwreck',
-      '22 Jump Street'
+      '22 Jump Street',
+      'Horrible Bosses 2',
+      'A Million Ways To Die In The West'
     ]
   }
 ]

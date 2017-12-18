@@ -52,37 +52,38 @@ export default {
   data () {
     return {
       titleData: [],
-      titlesPosition: 0
+      titlesPosition: 0,
+      columns: 0
     }
   },
   computed: {
-    _titlesWidth () {
-      let width = document.documentElement.clientWidth
-      if (width > 1250) { return 6 } else
-      if (width > 800) { return 5 } else
-      if (width <= 800) { return 4 }
-    },
+    // _titlesWidth () {
+    //   let width = document.documentElement.clientWidth
+    //   if (width > 1250) { return 6 } else
+    //   if (width > 800) { return 5 } else
+    //   if (width <= 800) { return 4 }
+    // },
     _titlesCount () {
       return Object.keys(this.titleData).length
     },
     _titlesRight () {
-      return this._titlesCount - this.titlesPosition - this._titlesWidth
+      return this._titlesCount - this.titlesPosition - this.columns
     },
     _left: function () {
-      return -88.5 * this.titlesPosition / this._titlesWidth
+      return -88.5 * this.titlesPosition / this.columns
     }
   },
   methods: {
     titlesLeft: function () {
-      if (this.titlesPosition >= this._titlesWidth) {
-        this.titlesPosition -= this._titlesWidth
+      if (this.titlesPosition >= this.columns) {
+        this.titlesPosition -= this.columns
       } else {
         this.titlesPosition -= this.titlesPosition
       }
     },
     titlesRight: function () {
-      if (this._titlesRight >= this._titlesWidth) {
-        this.titlesPosition += this._titlesWidth
+      if (this._titlesRight >= this.columns) {
+        this.titlesPosition += this.columns
       } else {
         this.titlesPosition += this._titlesRight
       }
@@ -99,11 +100,29 @@ export default {
           })
         .catch(console.log)
       })
+    },
+    calcColumns: function (event) {
+      let self = this
+      let width = document.documentElement.clientWidth
+      if (width > 1250) { self.columns = 6 } else
+      if (width > 800) { self.columns = 5 } else
+      if (width <= 800) { self.columns = 4 }
+
+      if (typeof event === 'undefined') { return }
+      if (event.type === 'resize' && this._titlesRight <= 0) {
+        this.titlesPosition = this._titlesCount - this.columns
+      }
     }
   },
   created () {
     this.getTitles()
-    console.log(this.titleData)
+    window.addEventListener('resize', this.calcColumns)
+  },
+  mounted () {
+    this.calcColumns()
+  },
+  destroyed () {
+    window.removeEventListener('resize', this.calcColumns)
   }
 }
 </script>

@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <trailer v-if="showTrailer" @closeVideo="showTrailer = false"></trailer>
     <div class="hero">
       <div class="brand">MovieDb</div>
       <header class="menu">
@@ -12,15 +13,15 @@
       </header>
 
       <div class="hero-details">
-        <h1>Coco</h1>
+        <h1>Jumanji</h1>
         <ul>
-          <li>Animation</li>
+          <li>Action</li>
           <li>Adventure</li>
           <li>Comedy</li>
         </ul>
-        <div class="trailer-button"><span>Watch Trailer</span><icon name="play-circle-o"></icon></div>
+        <div class="trailer-button" @click="playTrailer"><span>Watch Trailer</span><icon name="play-circle-o"></icon></div>
       </div>
-      <img src="https://images-na.ssl-images-amazon.com/images/M/MV5BMTg2NTMzNTU2Ml5BMl5BanBnXkFtZTgwNzk4NDMwMTI@._V1_SX1777_CR0,0,1777,788_AL_.jpg" />
+      <img src="http://www.wallpapers4k.us/wp-content/uploads/2017/11/jumanji-welcome-to-the-jungle-wallpaper.jpg" />
       <div class="menu bottom">
         <div class="inner">
           <ul>
@@ -38,10 +39,6 @@
     </div>
     <div class="titles">
       <div class="titles-transition"></div>
-
-<!--       <template v-for="titles, categoryName in titleData">
-        <titles-row :titles="titles" :categoryName="categoryName"></titles-row>
-      </template> -->
       <template v-for="category in titlesByCategory">
         <titles-row :category="category"></titles-row>
       </template>
@@ -64,6 +61,7 @@
 
 <script>
 import TitlesRow from '@/components/TitlesRow'
+import Trailer from '@/components/Trailer'
 import Loader from '@/components/Loader'
 import titlesByCategory from '@/data/titlesByCategory.js'
 import additionalTitles from '@/data/additionalTitles.js'
@@ -76,6 +74,7 @@ export default {
   name: 'Main',
   components: {
     'titles-row': TitlesRow,
+    'trailer': Trailer,
     'loader': Loader,
     'Icon': Icon
   },
@@ -85,7 +84,8 @@ export default {
       titlesByCategory: titlesByCategory,
       additionalTitles: additionalTitles,
       activeHeroHeader: 'movies',
-      activeHeroSub: 'theaters'
+      activeHeroSub: 'theaters',
+      showTrailer: false
     }
   },
   methods: {
@@ -94,6 +94,9 @@ export default {
     },
     selectHeroSub: function (tab) {
       this.activeHeroSub = tab
+    },
+    playTrailer: function () {
+      this.showTrailer = true
     },
     returnToMenu: function () {
       document.body.scrollTop = 0
@@ -120,7 +123,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 // fonts
-@import url('https://fonts.googleapis.com/css?family=Roboto|Assistant|Yantramanav|Modak|Poppins');
+@import url('https://fonts.googleapis.com/css?family=Roboto|Assistant|Yantramanav|Modak|Poppins|Archivo+Black|Open+Sans:800');
 
 // variables
 $brand-red: #da3535;
@@ -160,7 +163,8 @@ ul {
 .hero {
   position: relative;
   width: 100%;
-  font-family: 'Poppins';
+  font-family: 'Archivo Black';
+  letter-spacing: 1px;
   color: #fff;
   .brand {
     position: absolute;
@@ -223,11 +227,13 @@ ul {
       font-size: 3em;
       padding-left: 0.1em;
       margin-bottom: 0;
+      text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
     }
     ul {
       margin-top: 0;
       li {
-        font-family: 'Poppins';
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+        font-family: 'Archivo Black';
         font-size: 0.7em;
         font-weight: 800;
         margin: 0.4em;
@@ -236,16 +242,19 @@ ul {
     .trailer-button {
       position: relative;
       display: inline-block;
+      font-family: 'Open Sans';
+      letter-spacing: 0;
       color: #fff;
       font-size: 0.8em;
-      font-weight: 700;
+      font-weight: 800;
+      box-shadow: 0 0 7px 0px rgba(0, 0, 0, 0.3), 0 0 5px 0px rgba(0, 0, 0, 0.1);
       background-color: $brand-red;
       border-radius: 2em;
       padding: 1em 2.5em 1em 1em;
       cursor: pointer;
       @include transition(all, 0.15s);
       span {
-        margin-right: 0.5em;
+        margin-right: 1em;
       }
       &:hover {
         background-color: $brand-red-dark;
@@ -278,6 +287,8 @@ ul {
       display: inline-block;
       background-color: #fff;
       border-radius: 5px 5px 0 0;
+      font-family: 'Poppins';
+      letter-spacing: 0;
       ul {
         margin: 0 3em;
         border-bottom: 1px solid $light-grey;

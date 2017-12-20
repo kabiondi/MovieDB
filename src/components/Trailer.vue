@@ -1,6 +1,6 @@
 <template>
-  <div class="video-overlay" @click.self="closeVideo">
-    <div class="video-wrapper" :class="{ mounted : mounted === true }">
+  <div class="video-overlay" @click.self="closeVideo" :class="{ opened : opened === true }">
+    <div class="video-wrapper" :class="{ opened : opened === true }">
       <button class="close-button" @click="closeVideo"><icon name="close"></icon></button>
       <button v-if="paused" class="play-pause" :class="{ paused : paused === true }" @click="togglePlay" ><icon name="play"></icon></button>
       <button v-else class="play-pause" @click="togglePlay" ><icon name="pause"></icon></button>
@@ -23,13 +23,18 @@ export default {
   },
   data () {
     return {
-      mounted: false,
+      opened: false,
       paused: false
     }
   },
   methods: {
     closeVideo: function () {
-      this.$emit('closeVideo')
+      this.$refs.movieTrailer.pause()
+      let self = this
+      this.opened = false
+      setTimeout(function () {
+        self.$emit('closeVideo')
+      }, 150)
     },
     togglePlay: function () {
       const video = this.$refs.movieTrailer
@@ -44,7 +49,7 @@ export default {
     animateIn: function () {
       let self = this
       setTimeout(function () {
-        self.mounted = true
+        self.opened = true
       }, 50)
     }
   },
@@ -76,7 +81,13 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0);
+    @include transition(all 0.1s linear);
+
+    &.opened {
+      background-color: rgba(0, 0, 0, 0.8);
+      @include transition(all 0.3s linear);
+    }
 
     .video-wrapper {
       width: 10%;
@@ -86,10 +97,11 @@ export default {
       top: 50%;
       left: 50%;
       @include transform(translateX(-50%) translateY(-50%));
-      @include transition(all 0.5s linear);
+      @include transition(all 0.1s linear);
 
-      &.mounted {
+      &.opened {
         width: 80%;
+        @include transition(all 0.3s linear);
       }
 
       .close-button {
@@ -129,7 +141,7 @@ export default {
         top: 50%;
         left: 50%;
         @include transform(translateX(-50%) translateY(-50%));
-        @include transition(background-color 0.2s linear);
+        @include transition(opacity 0.2s linear);
 
         &.paused {
           padding-left: 18px;

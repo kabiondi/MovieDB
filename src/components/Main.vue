@@ -7,8 +7,9 @@
         <ul>
           <li :class="{ active: activeHeroHeader === 'movies' }" @click="selectHeroHeader('movies')">Movies</li>
           <li :class="{ active: activeHeroHeader === 'photos' }" @click="selectHeroHeader('photos')">Photo Gallery</li>
-          <li :class="{ active: activeHeroHeader === 'community' }" @click="selectHeroHeader('community')">Community</li>
-          <li :class="{ active: activeHeroHeader === 'news' }" @click="selectHeroHeader('news')">News</li>
+          <!-- <li :class="{ active: activeHeroHeader === 'community' }" @click="selectHeroHeader('community')">Community</li> -->
+          <!-- <li :class="{ active: activeHeroHeader === 'news' }" @click="selectHeroHeader('news')">News</li> -->
+          <li :class="{ active: activeHeroHeader === 'news' }" @click="selectHeroHeader('news')">Search</li>
         </ul>
       </header>
 

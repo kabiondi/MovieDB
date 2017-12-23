@@ -105,10 +105,11 @@ export default {
       }
 
       .close-button {
+        opacity: 0;
         position: absolute;
         z-index: 5;
-        top: -35px;
-        right: -35px;
+        top: 5px;
+        right: 5px;
         background-color: rgba(0, 0, 0, 0.1);
         border: 2px solid rgba(255, 255, 255, 0.6);
         border-radius: 50%;
@@ -118,7 +119,7 @@ export default {
         width: 50px;
         height: 50px;
         cursor: pointer;
-        @include transition(all 0.1s linear);
+        @include transition(all 0.2s linear);
 
         &:hover {
           background-color: rgba(255, 255, 255, 0.2);
@@ -165,6 +166,9 @@ export default {
 
       &:hover {
         .play-pause {
+          opacity: 1;
+        }
+        .close-button {
           opacity: 1;
         }
       }

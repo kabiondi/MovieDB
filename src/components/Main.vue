@@ -9,8 +9,12 @@
           <li :class="{ active: activeHeroHeader === 'photos' }" @click="selectHeroHeader('photos')">Photo Gallery</li>
           <!-- <li :class="{ active: activeHeroHeader === 'community' }" @click="selectHeroHeader('community')">Community</li> -->
           <!-- <li :class="{ active: activeHeroHeader === 'news' }" @click="selectHeroHeader('news')">News</li> -->
-          <li :class="{ active: activeHeroHeader === 'news' }" @click="selectHeroHeader('news')">Search</li>
+          <li :class="{ active: activeHeroHeader === 'search' }" @click="revealSearch">Search</li>
         </ul>
+        <div class="search-wrapper" :class="{ active: showSearch }">
+          <icon name="search"></icon>
+          <input ref="searchInput" type="text" v-on:keyup.enter="searchTitles"></input>
+        </div>
       </header>
 
       <div class="hero-details">
@@ -86,12 +90,27 @@ export default {
       additionalTitles: additionalTitles,
       activeHeroHeader: 'movies',
       activeHeroSub: 'theaters',
-      showTrailer: false
+      showTrailer: false,
+      showSearch: false
     }
   },
   methods: {
     selectHeroHeader: function (tab) {
       this.activeHeroHeader = tab
+    },
+    revealSearch: function () {
+      const searchInput = this.$refs.searchInput
+      this.selectHeroHeader('search')
+      if (this.showSearch === true) {
+        searchInput.value = ''
+        searchInput.blur()
+      } else {
+        searchInput.focus()
+      }
+      this.showSearch = !this.showSearch
+    },
+    searchTitles: function () {
+      alert('make a search function')
     },
     selectHeroSub: function (tab) {
       this.activeHeroSub = tab
@@ -298,12 +317,51 @@ ul {
           padding: 1em;
           color: #666a66;
           border-bottom: 2px solid rgba(100, 100, 100, 0);
-          @include transition(border-color 0.5s, color 0.5s)
+          @include transition(border-color 0.5s, color 0.5s);
           &.active,
           &:hover {
             color: #333;
             border-color: rgba(100, 100, 100, 1);
           }
+        }
+      }
+    }
+    .search-wrapper {
+      position: relative;
+      color: $gold;
+      .fa-icon {
+        position: absolute;
+        z-index: 1;
+        opacity: 0;
+        width: 20px;
+        height: 20px;
+        left: 10px;
+        top: 50%;
+        @include transform(translateY(-50%));
+      }
+      input {
+        width: 0;
+        opacity: 0;
+        padding: 10px 32px 12px;
+        border-radius: 5px;
+        border: none;
+        background-color: #000;
+        font-size: 16px;
+        color: $light-gold;
+        font-weight: 700;
+        text-align: center;
+        @include transition(all, 0.2s);
+        &:focus {
+          outline: none;
+        }
+      }
+      &.active {
+        .fa-icon {
+          opacity: 0.9;
+        }
+        input {
+          width: 250px;
+          opacity: 0.85;
         }
       }
     }

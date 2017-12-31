@@ -57,12 +57,6 @@ export default {
     }
   },
   computed: {
-    // _titlesWidth () {
-    //   let width = document.documentElement.clientWidth
-    //   if (width > 1250) { return 6 } else
-    //   if (width > 800) { return 5 } else
-    //   if (width <= 800) { return 4 }
-    // },
     _titlesCount () {
       return Object.keys(this.titleData).length
     },
@@ -94,7 +88,7 @@ export default {
         imdb.get(title,
           // { apiKey: '4162605e',
           { apiKey: 'ac6f6f7b',
-            timeout: 30000
+            timeout: 9000
           }).then(function (response) {
             self.titleData.push(response)
           })

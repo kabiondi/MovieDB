@@ -1,21 +1,26 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" @click="clickAway">
     <trailer v-if="showTrailer" @closeVideo="showTrailer = false"></trailer>
-    <div class="hero">
+    <div class="hero" :class="{ dimmed: searchedTitle !== null }">
       <div class="brand">MovieDb</div>
       <header class="menu">
         <ul>
-          <li :class="{ active: activeHeroHeader === 'movies' }" @click="selectHeroHeader('movies')">Movies</li>
-          <li :class="{ active: activeHeroHeader === 'photos' }" @click="selectHeroHeader('photos')">Photo Gallery</li>
+          <li :class="{ active: showSearch === false }">Movies</li>
+          <!-- <li :class="{ active: activeHeroHeader === 'photos' }" @click="selectHeroHeader('photos')">Photo Gallery</li> -->
           <!-- <li :class="{ active: activeHeroHeader === 'community' }" @click="selectHeroHeader('community')">Community</li> -->
           <!-- <li :class="{ active: activeHeroHeader === 'news' }" @click="selectHeroHeader('news')">News</li> -->
-          <li :class="{ active: activeHeroHeader === 'search' }" @click="revealSearch">Search</li>
+          <li class="search-button" :class="{ active: showSearch === true }" @click.stop="toggleRevealSearch"><icon name="search"></icon>Search</li>
         </ul>
-        <div class="search-wrapper" :class="{ active: showSearch }">
+        <div class="search-wrapper" :class="{ active: showSearch }" @click.stop>
           <icon name="search"></icon>
-          <input ref="searchInput" type="text" v-on:keyup.enter="searchTitles"></input>
+          <input ref="searchInput" type="text" v-on:keyup.enter="searchTitle"></input>
         </div>
       </header>
+      <div v-if="searchedTitle" class="searched-title" @click.stop>
+        <div class="search-poster">
+          <img :src="searchedTitle.poster" />
+        </div>
+      </div>
 
       <div class="hero-details">
         <h1>Jumanji</h1>
@@ -26,7 +31,7 @@
         </ul>
         <div class="trailer-button" @click="playTrailer"><span>Watch Trailer</span><icon name="play-circle-o"></icon></div>
       </div>
-      <img src="http://www.wallpapers4k.us/wp-content/uploads/2017/11/jumanji-welcome-to-the-jungle-wallpaper.jpg" />
+      <img class="hero-image" src="http://www.wallpapers4k.us/wp-content/uploads/2017/11/jumanji-welcome-to-the-jungle-wallpaper.jpg" />
       <div class="menu bottom">
         <div class="inner">
           <ul>
@@ -73,7 +78,7 @@ import additionalTitles from '@/data/additionalTitles.js'
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
 
-// const imdb = require('imdb-api')
+const imdb = require('imdb-api')
 
 export default {
   name: 'Main',
@@ -91,26 +96,38 @@ export default {
       activeHeroHeader: 'movies',
       activeHeroSub: 'theaters',
       showTrailer: false,
-      showSearch: false
+      showSearch: false,
+      searchedTitle: null
     }
   },
   methods: {
-    selectHeroHeader: function (tab) {
-      this.activeHeroHeader = tab
-    },
-    revealSearch: function () {
+    toggleRevealSearch: function () {
       const searchInput = this.$refs.searchInput
-      this.selectHeroHeader('search')
       if (this.showSearch === true) {
-        searchInput.value = ''
-        searchInput.blur()
+        this.closeSearch()
       } else {
         searchInput.focus()
+        this.showSearch = true
       }
-      this.showSearch = !this.showSearch
     },
-    searchTitles: function () {
-      alert('make a search function')
+    closeSearch: function () {
+      const searchInput = this.$refs.searchInput
+      searchInput.value = ''
+      searchInput.blur()
+      this.searchedTitle = null
+      this.showSearch = false
+    },
+    searchTitle: function () {
+      const self = this
+      let title = self.$refs.searchInput.value
+      imdb.get(title,
+        // { apiKey: '4162605e',
+        { apiKey: 'ac6f6f7b',
+          timeout: 5000
+        }).then(function (response) {
+          self.searchedTitle = response
+        })
+      .catch(console.log)
     },
     selectHeroSub: function (tab) {
       this.activeHeroSub = tab
@@ -129,6 +146,9 @@ export default {
           self.rowsAdded += 1
         }, 400)
       }
+    },
+    clickAway: function () {
+      this.closeSearch()
     }
   },
   created: function () {
@@ -182,6 +202,7 @@ ul {
 
 .hero {
   position: relative;
+  background-color: #000;
   width: 100%;
   font-family: 'Archivo Black';
   letter-spacing: 1px;
@@ -224,6 +245,19 @@ ul {
           @include transform(translateX(-50%));
           @include transition(all, 0.3s)
         }
+        &.search-button {
+          position: relative;
+          padding-left: 18px;
+          .fa-icon {
+            position: absolute;
+            color: $light-gold;
+            width: 14px;
+            height: 14px;
+            top: 50%;
+            left: 0;
+            @include transform(translateY(-50%) rotate(90deg));
+          }
+        }
         &.active,
         &:hover {
           &:after {
@@ -233,9 +267,10 @@ ul {
       }
     }
   }
-  img {
+  .hero-image {
     width: 100%;
-    //@include transform(scaleX(-1))
+    opacity: 1;
+    @include transition(all 0.2s);
   }
   .hero-details {
     position: absolute;
@@ -243,11 +278,13 @@ ul {
     text-transform: uppercase;
     top: 30%;
     left: 10%;
+    @include transition(all 0.4s);
+    transition-delay: 0.4s;
     h1 {
       font-size: 3em;
       padding-left: 0.1em;
       margin-bottom: 0;
-      text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+      text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
     }
     ul {
       margin-top: 0;
@@ -286,6 +323,20 @@ ul {
         height: 1.7em;
         width: 1.7em;
       }
+    }
+  }
+  .searched-title {
+    position: absolute;
+    z-index: 2;
+    top: 150px;
+    left: 50%;
+    @include transform(translateX(-50%));
+    width: 82%;
+    max-width: 800px;
+    border: 1px solid #fff;
+    height: 30vw;
+    img {
+      width: 200px;
     }
   }
   .menu {
@@ -364,6 +415,15 @@ ul {
           opacity: 0.85;
         }
       }
+    }
+  }
+  &.dimmed {
+    .hero-image {
+      opacity: 0.6;
+    }
+    .hero-details {
+      opacity: 0;
+      @include transition(all 0.2s)
     }
   }
 }

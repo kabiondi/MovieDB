@@ -141,6 +141,7 @@ export default {
         z-index: 6;
         top: 50%;
         left: 50%;
+        cursor: pointer;
         @include transform(translateX(-50%) translateY(-50%));
         @include transition(opacity 0.2s linear);
 

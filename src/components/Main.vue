@@ -11,16 +11,22 @@
           <!-- <li :class="{ active: activeHeroHeader === 'news' }" @click="selectHeroHeader('news')">News</li> -->
           <li class="search-button" :class="{ active: showSearch === true }" @click.stop="toggleRevealSearch"><icon name="search"></icon>Search</li>
         </ul>
-        <div class="search-wrapper" :class="{ active: showSearch }" @click.stop>
+        <div class="search-wrapper" :class="{ active: showSearch === true }" @click.stop>
           <icon name="search"></icon>
           <input ref="searchInput" type="text" v-on:keyup.enter="searchTitle"></input>
         </div>
       </header>
-      <div v-if="searchedTitle" class="searched-title" @click.stop>
-        <div class="search-poster">
+      <transition name="search-results">
+        <div v-if="searchedTitle" class="searched-title" @click.stop>
+          <div class="close-search" @click="closeSearch"><icon name="close"></icon></div>
           <img :src="searchedTitle.poster" />
+          <div class="search-info">
+            <h2>{{ searchedTitle.title }} ({{ searchedTitle.year }})</h2>
+            <h3 class="search-details"><span>{{ searchedTitle.rated }}</span>{{ searchedTitle.runtime }} - {{ searchedTitle.genres }}</h3>
+            <p>{{ searchedTitle.plot }}</p>
+          </div>
         </div>
-      </div>
+      </transition>
 
       <div class="hero-details">
         <h1>Jumanji</h1>
@@ -126,8 +132,13 @@ export default {
           timeout: 5000
         }).then(function (response) {
           self.searchedTitle = response
+          console.log(response)
         })
-      .catch(console.log)
+      .catch(function () {
+        self.searchedTitle = {
+          title: 'No results found for "' + title + '"'
+        }
+      })
     },
     selectHeroSub: function (tab) {
       this.activeHeroSub = tab
@@ -328,15 +339,93 @@ ul {
   .searched-title {
     position: absolute;
     z-index: 2;
+    overflow: hidden;
     top: 150px;
     left: 50%;
     @include transform(translateX(-50%));
     width: 82%;
     max-width: 800px;
-    border: 1px solid #fff;
-    height: 30vw;
+    border-width: 4px;
+    border-radius: 4px;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.65);
+    padding: 12px;
+    height: 24vw;
+    max-height: 310px;
+    @include transition(all 0.2s ease);
+    .close-search {
+      position: absolute;
+      z-index: 1;
+      top: 4px;
+      right: 8px;
+      padding: 5px;
+      cursor: pointer;
+      color: #fff;
+      opacity: 0.5;
+      .fa-icon {
+        width: 16px;
+        height: 20px;
+      }
+      &:hover {
+        opacity: 0.8;
+      }
+    }
     img {
-      width: 200px;
+      height: 24vw;
+      max-height: 310px;
+      box-shadow: 0 0 1px 2px rgba(255, 255, 255, 0.1), 0 0 3px 3px rgba(255, 255, 255, 0.1);
+    }
+    .search-info {
+      color: #ddd;
+      font-family: 'Roboto';
+      display: inline-block;
+      vertical-align: top;
+      width: 70%;
+      max-width: 560px;
+      margin-left: 10px;
+      opacity: 1;
+      padding-left: 0;
+      @include transform(translateX(0));
+      @include transition(all 0.4s ease);
+      transition-delay: 0.2s;
+      h2 {
+        font-family: 'Open Sans';
+        font-weight: 700;
+        margin-top: 0;
+        margin-bottom: 10px;
+      }
+      .search-details {
+        font-family: 'Poppins';
+        margin-top: 10px;
+        span {
+          border: 1px solid #ddd;
+          margin-right: 10px;
+          padding: 2px 8px;
+        }
+      }
+      p {
+        height: 17vw;
+        color: #bbb;
+        overflow: auto;
+      }
+    }
+
+    // SEARCH RESULTS TRANSITION CLASSES
+    &.search-results-enter,
+    &.search-results-leave-to {
+      opacity: 0;
+      .search-info {
+        opacity: 0;
+      }
+    }
+    &.search-results-enter {
+      height: 2vw;
+      padding-left: 100px;
+      width: 1%;
+      .search-info {
+        @include transform(translateX(10%))
+      }
     }
   }
   .menu {
@@ -419,7 +508,7 @@ ul {
   }
   &.dimmed {
     .hero-image {
-      opacity: 0.6;
+      opacity: 0.5;
     }
     .hero-details {
       opacity: 0;

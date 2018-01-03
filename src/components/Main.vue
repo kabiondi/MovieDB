@@ -19,10 +19,10 @@
       <transition name="search-results">
         <div v-if="searchedTitle" class="searched-title" @click.stop>
           <div class="close-search" @click="closeSearch"><icon name="close"></icon></div>
-          <img :src="searchedTitle.poster" />
+          <img v-if="searchedTitle.poster" :src="searchedTitle.poster" />
           <div class="search-info">
-            <h2>{{ searchedTitle.title }} ({{ searchedTitle.year }})</h2>
-            <h3 class="search-details"><span>{{ searchedTitle.rated }}</span>{{ searchedTitle.runtime }} - {{ searchedTitle.genres }}</h3>
+            <h2>{{ searchedTitle.title }} <span v-if="searchedTitle.year">({{ searchedTitle.year }})</span></h2>
+            <h3 v-if="searchedTitle.rated" class="search-details"><span>{{ searchedTitle.rated }}</span>{{ searchedTitle.runtime }} - {{ searchedTitle.genres }}</h3>
             <p>{{ searchedTitle.plot }}</p>
           </div>
         </div>
@@ -182,6 +182,7 @@ $brand-red-dark: #b32020;
 $light-gold: #f3c532;
 $gold: #e2b010;
 $light-grey: #eee;
+$break-large: "1300px";
 
 @mixin transition($transition...) {
   -moz-transition:    $transition;
@@ -343,8 +344,8 @@ ul {
     top: 150px;
     left: 50%;
     @include transform(translateX(-50%));
-    width: 82%;
-    max-width: 800px;
+    width: 82vw;
+    max-width: 830px;
     border-width: 4px;
     border-radius: 4px;
     border-style: solid;
@@ -373,7 +374,9 @@ ul {
     }
     img {
       height: 24vw;
+      width: 16.1vw;
       max-height: 310px;
+      max-width: 208px;
       box-shadow: 0 0 1px 2px rgba(255, 255, 255, 0.1), 0 0 3px 3px rgba(255, 255, 255, 0.1);
     }
     .search-info {
@@ -381,13 +384,17 @@ ul {
       font-family: 'Roboto';
       display: inline-block;
       vertical-align: top;
-      width: 70%;
-      max-width: 560px;
-      margin-left: 10px;
+      //width: 63vw;
+      width: calc(100% - 19vw);
+      //max-width: 600px;
+      margin-left: 14px;
       opacity: 1;
       padding-left: 0;
       @include transform(translateX(0));
-      @include transition(all 0.4s ease);
+      @include transition(opacity 0.4s, transform 0.4s);
+      @media screen and (min-width: $break-large) {
+        width: 582px;
+      }
       transition-delay: 0.2s;
       h2 {
         font-family: 'Open Sans';
@@ -396,7 +403,7 @@ ul {
         margin-bottom: 10px;
       }
       .search-details {
-        font-family: 'Poppins';
+        font-family: 'Assistant';
         margin-top: 10px;
         span {
           border: 1px solid #ddd;
@@ -405,9 +412,19 @@ ul {
         }
       }
       p {
-        height: 17vw;
+        height: calc(20vw - 58px);
+        max-height: 218px;
         color: #bbb;
+        font-family: 'Assistant';
         overflow: auto;
+        padding-right: 10px;
+      }
+      ::-webkit-scrollbar {
+        width: 4px;
+        background-color: rgba(255, 255, 245, 0.1);
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: $brand-red-dark;
       }
     }
 

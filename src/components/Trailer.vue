@@ -5,7 +5,7 @@
       <button v-if="paused" class="play-pause" :class="{ paused : paused === true }" @click="togglePlay" ><icon name="play"></icon></button>
       <button v-else class="play-pause" @click="togglePlay" ><icon name="pause"></icon></button>
       <video id="movie-trailer" ref="movieTrailer" @click="togglePlay" autoplay>
-        <source src="https://m.media-amazon.com/images/G/01/IMDb/design/a/2017/ptp/00128761-jumanji/video1.mp4" type="video/ogg">
+        <source src="https://m.media-amazon.com/images/G/01/IMDb/design/a/2017/ptp/00128761-jumanji/video1.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
@@ -163,6 +163,7 @@ export default {
       video {
         width: 100%;
         cursor: pointer;
+        box-shadow: 0 0 7px 2px rgba(255, 255, 255, 0.1), 0 0 5px 1px rgba(255, 255, 255, 0.1);
       }
 
       &:hover {

@@ -213,10 +213,6 @@ $break-large: "1300px";
   transform: $transform;
 }
 
-.app-container {
-  width: 100%;
-}
-
 ul {
   padding: 0;
   li {
@@ -252,6 +248,7 @@ ul {
     text-align: center;
     z-index: 1;
     ul {
+      min-height: 44px;
       li {
         position: relative;
         text-transform: uppercase;
@@ -501,6 +498,7 @@ ul {
     }
     .search-wrapper {
       position: relative;
+      display: table;
       color: $gold;
       .fa-icon {
         position: absolute;
@@ -515,14 +513,14 @@ ul {
       input {
         width: 0;
         opacity: 0;
-        padding: 10px 32px 12px;
+        padding: 12px 8px 12px 50px;
         border-radius: 5px;
         border: none;
         background-color: #000;
         font-size: 16px;
         color: $light-gold;
         font-weight: 700;
-        text-align: center;
+        // text-align: center;
         @include transition(all, 0.2s);
         &:focus {
           outline: none;

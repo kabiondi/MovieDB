@@ -37,23 +37,23 @@ export default {
       height: 1.4em;
       margin: 0.1em;
       margin-bottom: 0;
-      background-color: #9999aa;
+      background-color: #ccccdd;
       opacity: 0;
       @include animation(show 1.2s linear infinite)
       &:nth-child(1) {
-        @include animation-delay(0.1s);
+        @include animation-delay(-0.5s);
       }
       &:nth-child(2) {
-        @include animation-delay(0.2s);
+        @include animation-delay(-0.4s);
       }
       &:nth-child(3) {
-        @include animation-delay(0.3s);
+        @include animation-delay(-0.3s);
       }
       &:nth-child(4) {
-        @include animation-delay(0.4s);
+        @include animation-delay(-0.2s);
       }
       &:nth-child(5) {
-        @include animation-delay(0.5s);
+        @include animation-delay(-0.1s);
       }
     }
   }
@@ -63,12 +63,14 @@ export default {
   0% { opacity: 0; }
   30% { opacity: 1; }
   90% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 @keyframes show {
   0% { opacity: 0; }
   30% { opacity: 1; }
   90% { opacity: 1; }
+  100% { opacity: 0; }
 }
 </style>
 

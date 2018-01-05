@@ -42,10 +42,10 @@
         <div class="inner">
           <ul>
             <!-- <li :class="{ active: activeHeroSub === 'suggested' }" @click="selectHeroSub('suggested')">Suggested</li> -->
+            <li :class="{ active: activeHeroSub === 'suggested' }" @click="selectHeroSub('suggested')">Suggested</li>
             <li :class="{ active: activeHeroSub === 'theaters' }" @click="selectHeroSub('theaters')">In Theaters</li>
             <li :class="{ active: activeHeroSub === 'coming' }" @click="selectHeroSub('coming')">Coming Soon</li>
             <li :class="{ active: activeHeroSub === 'mylist' }" @click="selectHeroSub('mylist')">My List</li>
-            <li :class="{ active: activeHeroSub === 'suggested' }" @click="selectHeroSub('suggested')">Suggested</li>
             <!-- <li :class="{ active: activeHeroSub === 'tv' }" @click="selectHeroSub('tv')">TV Series</li> -->
             <!-- <li :class="{ active: activeHeroSub === 'trailers' }" @click="selectHeroSub('trailers')">Trailers</li> -->
             <li :class="{ active: activeHeroSub === 'more' }" @click="selectHeroSub('more')">More</li>
@@ -55,6 +55,10 @@
     </div>
     <div class="titles">
       <div class="titles-transition"></div>
+      <template v-if="_menuCategory">
+        <titles-row :category="_menuCategory"></titles-row>
+      </template>
+
       <template v-for="category in titlesByCategory">
         <titles-row :category="category"></titles-row>
       </template>
@@ -81,6 +85,7 @@ import Trailer from '@/components/Trailer'
 import Loader from '@/components/Loader'
 import titlesByCategory from '@/data/titlesByCategory.js'
 import additionalTitles from '@/data/additionalTitles.js'
+import menuTitles from '@/data/menuTitles.js'
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
 
@@ -99,8 +104,9 @@ export default {
       rowsAdded: 0,
       titlesByCategory: titlesByCategory,
       additionalTitles: additionalTitles,
+      menuTitles: menuTitles,
       activeHeroHeader: 'movies',
-      activeHeroSub: 'theaters',
+      activeHeroSub: 'suggested',
       showTrailer: false,
       showSearch: false,
       searchedTitle: null
@@ -160,6 +166,15 @@ export default {
     },
     clickAway: function () {
       this.closeSearch()
+    }
+  },
+  computed: {
+    _menuCategory () {
+      if (this.activeHeroSub === 'theaters') { return this.menuTitles[0] } else
+      if (this.activeHeroSub === 'coming') { return this.menuTitles[1] } else
+      if (this.activeHeroSub === 'mylist') { return this.menuTitles[2] } else {
+        return false
+      }
     }
   },
   created: function () {
@@ -225,6 +240,7 @@ ul {
     top: 0.8em;
     left: 1em;
     color: $brand-red;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
     font-family: 'Modak';
     font-size: 1.8em;
     cursor: pointer;

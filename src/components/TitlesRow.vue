@@ -24,6 +24,7 @@
             </div>
           </li>
         </template>
+        <li v-for="slide in _blankSlidesCount" class="blank-tile"></li>
       </ul>
       <div v-show="titlesPosition > 0" class="titles-left" @click="titlesLeft">
         <icon name="chevron-left"></icon>
@@ -65,6 +66,9 @@ export default {
     },
     _left: function () {
       return -88.5 * this.titlesPosition / this.columns
+    },
+    _blankSlidesCount () {
+      return Math.max(0, this.columns - this._titlesCount)
     }
   },
   methods: {
@@ -109,10 +113,18 @@ export default {
     }
   },
   created () {
-    this.getTitles()
+    // this.getTitles()
     window.addEventListener('resize', this.calcColumns)
   },
+  watch: {
+    category: function () {
+      this.titlesPosition = 0
+      this.titleData = []
+      this.getTitles()
+    }
+  },
   mounted () {
+    this.getTitles()
     this.calcColumns()
   },
   destroyed () {
@@ -128,9 +140,9 @@ export default {
 $light-gold: #f3c532;
 $gold: #e2b010;
 $grey3: #333333;
-$grey6: #666666;
+$grey5: #555555;
 $grey7: #777777;
-$greyC: #cccccc;
+$greyD: #dddddd;
 $break-large: "1250px";
 $break-small: "850px";
 
@@ -182,6 +194,16 @@ $break-small: "850px";
         width: 21.325vw;
       }
       @include transition(all, 0.2s)
+      &.blank-tile {
+        height: 31vw;
+        background-color: transparent;
+        @media screen and (min-width: $break-large) {
+          height: 26vw;
+        }
+        @media screen and (max-width: $break-small) {
+          height: 40vw;
+        }
+      }
       .image-div {
         position: relative;
         .play {
@@ -269,10 +291,10 @@ $break-small: "850px";
     position: absolute;
     top: 0;
     bottom: 0;
-    background-color: $grey6;
-    opacity: 0.3;
+    background-color: $grey5;
+    opacity: 0.4;
     cursor: pointer;
-    color: $greyC;
+    color: $greyD;
     @include transition(all 0.15s)
     .fa-icon {
       position: absolute;

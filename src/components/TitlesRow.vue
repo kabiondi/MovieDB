@@ -6,6 +6,7 @@
         <template v-for="title in titleData">
           <li>
             <div class="image-div">
+              <div class="list-add" @click="toggleMyList(title.title)"><span>My List</span><icon name="plus-circle"></icon></div>
               <div class="play">
                 <icon name="play-circle-o"></icon>
               </div>
@@ -110,6 +111,9 @@ export default {
       if (event.type === 'resize' && this._titlesRight <= 0) {
         this.titlesPosition = this._titlesCount - this.columns
       }
+    },
+    toggleMyList: function (title) {
+      this.$emit('addToMyList', title)
     }
   },
   created () {
@@ -134,9 +138,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css?family=Roboto|Heebo|Yantramanav|Assistant');
+@import url('https://fonts.googleapis.com/css?family=Roboto|Heebo|Yantramanav|Assistant|Montserrat:900');
 
 // variables
+$brand-red: #da3535;
 $light-gold: #f3c532;
 $gold: #e2b010;
 $grey3: #333333;
@@ -202,6 +207,26 @@ $break-small: "850px";
         }
         @media screen and (max-width: $break-small) {
           height: 40vw;
+        }
+      }
+      .list-add {
+        opacity: 0;
+        background-color: rgba(255, 255, 255, 0.9);
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: $brand-red;
+        font-size: 12px;
+        padding: 0 5px 5px;
+        box-shadow: 2px 2px 3px 1px rgba(0,0,0,0.2);
+        border-bottom-right-radius: 5px;
+        @include transition(all, 0.2s)
+        span {
+          //opacity: 0;
+        }
+        .fa-icon {
+          margin-left: 6px;
+          transform: translateY(26%);
         }
       }
       .image-div {
@@ -282,6 +307,9 @@ $break-small: "850px";
           .play {
             opacity: 0.6;
           }
+        }
+        .list-add {
+          opacity: 1;
         }
       }
     }

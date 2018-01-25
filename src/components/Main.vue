@@ -56,15 +56,15 @@
     <div class="titles">
       <div class="titles-transition"></div>
       <template v-if="_menuCategory">
-        <titles-row :category="_menuCategory"></titles-row>
+        <titles-row :category="_menuCategory" @addToMyList="addToMyList"></titles-row>
       </template>
 
       <template v-for="category in titlesByCategory">
-        <titles-row :category="category"></titles-row>
+        <titles-row :category="category" @addToMyList="addToMyList"></titles-row>
       </template>
 
       <template v-for="category, index in additionalTitles">
-        <titles-row v-if="index < rowsAdded" :category="category"></titles-row>
+        <titles-row v-if="index < rowsAdded" :category="category" @addToMyList="addToMyList"></titles-row>
       </template>
     </div>
     <footer class="footer">
@@ -166,6 +166,9 @@ export default {
     },
     clickAway: function () {
       this.closeSearch()
+    },
+    addToMyList: function (title) {
+      this.menuTitles[2].titles.push(title)
     }
   },
   computed: {

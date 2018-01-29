@@ -55,8 +55,9 @@
     </div>
     <div class="titles">
       <div class="titles-transition"></div>
-      <template v-if="_menuCategory">
-        <titles-row :category="_menuCategory" @addToMyList="addToMyList" @removeFromMyList="removeFromMyList"></titles-row>
+      <!-- <template v-if="_menuCategory"> -->
+      <template v-for="category in menuTitles">
+        <titles-row v-show="_menuCategory === category" :category="category" @addToMyList="addToMyList" @removeFromMyList="removeFromMyList"></titles-row>
       </template>
 
       <template v-for="category in titlesByCategory">

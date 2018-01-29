@@ -113,8 +113,13 @@ export default {
       })
     },
     updateTitlesRow: function (newVal, oldVal) {
-      let newTitle = this.category.titles
-      this.imdbGet(newTitle[newTitle.length - 1])
+      let self = this
+      let diff = newVal.filter(function (title) {
+        return oldVal.indexOf(title) === -1
+      })
+      diff.forEach(function (newTitle) {
+        self.imdbGet(newTitle)
+      })
     },
     calcColumns: function (event) {
       let self = this
@@ -140,7 +145,6 @@ export default {
   },
   watch: {
     category: function () {
-      console.log('test from watch category')
       this.titlesPosition = 0
       this.titleData = []
       this.getTitles()

@@ -6,7 +6,12 @@
         <template v-for="title in titleData">
           <li>
             <div class="image-div">
-              <div class="list-add" @click="toggleMyList(title.title)"><span>My List</span><icon name="plus-circle"></icon></div>
+              <div v-if="category.name === 'My List'" class="list-add added" @click="removeFromMyList(title.title)">
+                <span>My List</span>
+                <icon class="check-circle" name="check-circle"></icon>
+                <icon class="minus-circle" name="minus-circle"></icon>
+              </div>
+              <div v-else class="list-add" @click="addToMyList(title.title)"><span>My List</span><icon name="plus-circle"></icon></div>
               <div class="play">
                 <icon name="play-circle-o"></icon>
               </div>
@@ -70,6 +75,9 @@ export default {
     },
     _blankSlidesCount () {
       return Math.max(0, this.columns - this._titlesCount)
+    },
+    _categoryTitles () {
+      return this.category.titles
     }
   },
   methods: {
@@ -87,18 +95,26 @@ export default {
         this.titlesPosition += this._titlesRight
       }
     },
+    imdbGet: function (title) {
+      const self = this
+      imdb.get(title,
+        // { apiKey: '4162605e',
+        { apiKey: 'ac6f6f7b',
+          timeout: 9000
+        }).then(function (response) {
+          self.titleData.push(response)
+        })
+      .catch(console.log)
+    },
     getTitles: function () {
       const self = this
       this.category.titles.forEach(function (title) {
-        imdb.get(title,
-          // { apiKey: '4162605e',
-          { apiKey: 'ac6f6f7b',
-            timeout: 9000
-          }).then(function (response) {
-            self.titleData.push(response)
-          })
-        .catch(console.log)
+        self.imdbGet(title)
       })
+    },
+    updateTitlesRow: function (newVal, oldVal) {
+      let newTitle = this.category.titles
+      this.imdbGet(newTitle[newTitle.length - 1])
     },
     calcColumns: function (event) {
       let self = this
@@ -112,19 +128,25 @@ export default {
         this.titlesPosition = this._titlesCount - this.columns
       }
     },
-    toggleMyList: function (title) {
+    addToMyList: function (title) {
       this.$emit('addToMyList', title)
+    },
+    removeFromMyList: function (title) {
+      this.$emit('removeFromMyList', title)
     }
   },
   created () {
-    // this.getTitles()
     window.addEventListener('resize', this.calcColumns)
   },
   watch: {
     category: function () {
+      console.log('test from watch category')
       this.titlesPosition = 0
       this.titleData = []
       this.getTitles()
+    },
+    _categoryTitles: function (newVal, oldVal) {
+      this.updateTitlesRow(newVal, oldVal)
     }
   },
   mounted () {
@@ -227,6 +249,24 @@ $break-small: "850px";
         .fa-icon {
           margin-left: 6px;
           transform: translateY(26%);
+        }
+        &.added {
+          background-color: $gold;
+          color: #fff;
+          opacity: 1;
+          .minus-circle {
+            display: none;
+          }
+        }
+        &:hover {
+          &.added {
+            .check-circle {
+              display: none;
+            }
+            .minus-circle {
+              display: inline-block;
+            }
+          }
         }
       }
       .image-div {

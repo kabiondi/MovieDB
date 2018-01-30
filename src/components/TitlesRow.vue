@@ -6,7 +6,7 @@
         <template v-for="title in titleData">
           <li>
             <div class="image-div">
-              <div v-if="category.name === 'My List'" class="list-add added" @click="removeFromMyList(title.title)">
+              <div v-if="inMyList(title.title)" class="list-add added" @click="removeFromMyList(title.title)">
                 <span>My List</span>
                 <icon class="check-circle" name="check-circle"></icon>
                 <icon class="minus-circle" name="minus-circle"></icon>
@@ -54,7 +54,8 @@ export default {
     'Icon': Icon
   },
   props: [
-    'category'
+    'category',
+    'myList'
   ],
   data () {
     return {
@@ -136,6 +137,9 @@ export default {
       if (event.type === 'resize' && this._titlesRight <= 0) {
         this.titlesPosition = this._titlesCount - this.columns
       }
+    },
+    inMyList: function (title) {
+      return this.myList.indexOf(title) !== -1
     },
     addToMyList: function (title) {
       this.$emit('addToMyList', title)

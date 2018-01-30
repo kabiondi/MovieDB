@@ -36,9 +36,13 @@ export default [
   {
     name: 'My List',
     titles: [
-      'Almost Famous',
       'Million Dollar Baby',
-      'There Will Be Blood'
+      'There Will Be Blood',
+      'Casino Royale',
+      'Monsters, Inc.',
+      'The Lord of the Rings: The Fellowship of the Ring',
+      'The Notebook',
+      'Avatar'
       // 'Hugo',
       // 'The Life Aquatic With Steve Zissou',
       // 'Pulp Fiction',

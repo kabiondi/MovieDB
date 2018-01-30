@@ -42,10 +42,10 @@
         <div class="inner">
           <ul>
             <!-- <li :class="{ active: activeHeroSub === 'suggested' }" @click="selectHeroSub('suggested')">Suggested</li> -->
+              <li :class="{ active: activeHeroSub === 'mylist' }" @click="selectHeroSub('mylist')">My List</li>
             <li :class="{ active: activeHeroSub === 'suggested' }" @click="selectHeroSub('suggested')">Suggested</li>
             <li :class="{ active: activeHeroSub === 'theaters' }" @click="selectHeroSub('theaters')">In Theaters</li>
             <li :class="{ active: activeHeroSub === 'coming' }" @click="selectHeroSub('coming')">Coming Soon</li>
-            <li :class="{ active: activeHeroSub === 'mylist' }" @click="selectHeroSub('mylist')">My List</li>
             <!-- <li :class="{ active: activeHeroSub === 'tv' }" @click="selectHeroSub('tv')">TV Series</li> -->
             <!-- <li :class="{ active: activeHeroSub === 'trailers' }" @click="selectHeroSub('trailers')">Trailers</li> -->
             <li :class="{ active: activeHeroSub === 'more' }" @click="selectHeroSub('more')">More</li>
@@ -57,15 +57,15 @@
       <div class="titles-transition"></div>
       <!-- <template v-if="_menuCategory"> -->
       <template v-for="category in menuTitles">
-        <titles-row v-show="_menuCategory === category" :category="category" @addToMyList="addToMyList" @removeFromMyList="removeFromMyList"></titles-row>
+        <titles-row v-show="_menuCategory === category" :category="category" :myList="_myList" @addToMyList="addToMyList" @removeFromMyList="removeFromMyList"></titles-row>
       </template>
 
       <template v-for="category in titlesByCategory">
-        <titles-row :category="category" @addToMyList="addToMyList" @removeFromMyList="removeFromMyList"></titles-row>
+        <titles-row :category="category" :myList="_myList" @addToMyList="addToMyList" @removeFromMyList="removeFromMyList"></titles-row>
       </template>
 
       <template v-for="category, index in additionalTitles">
-        <titles-row v-if="index < rowsAdded" :category="category" @addToMyList="addToMyList" @removeFromMyList="removeFromMyList"></titles-row>
+        <titles-row v-if="index < rowsAdded" :category="category" :myList="_myList" @addToMyList="addToMyList" @removeFromMyList="removeFromMyList"></titles-row>
       </template>
     </div>
     <footer class="footer">
@@ -107,7 +107,7 @@ export default {
       additionalTitles: additionalTitles,
       menuTitles: menuTitles,
       activeHeroHeader: 'movies',
-      activeHeroSub: 'suggested',
+      activeHeroSub: 'mylist',
       showTrailer: false,
       showSearch: false,
       searchedTitle: null
@@ -190,6 +190,9 @@ export default {
       if (this.activeHeroSub === 'mylist') { return this.menuTitles[2] } else {
         return false
       }
+    },
+    _myList () {
+      return this.menuTitles[2].titles
     }
   },
   created: function () {

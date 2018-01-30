@@ -169,12 +169,18 @@ export default {
       this.closeSearch()
     },
     addToMyList: function (title) {
+      if (this.menuTitles[2].titles.indexOf(title) !== -1) { return }
       let newList = this.menuTitles[2].titles.slice(0)
       newList.push(title)
       this.menuTitles[2].titles = newList
     },
     removeFromMyList: function (title) {
-      console.log(title)
+      let newList = this.menuTitles[2].titles.slice(0)
+      let index = newList.indexOf(title)
+      if (index !== -1) {
+        newList.splice(index, 1)
+        this.menuTitles[2].titles = newList
+      }
     }
   },
   computed: {

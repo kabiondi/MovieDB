@@ -114,12 +114,16 @@ export default {
     },
     updateTitlesRow: function (newVal, oldVal) {
       let self = this
-      let diff = newVal.filter(function (title) {
-        return oldVal.indexOf(title) === -1
-      })
-      diff.forEach(function (newTitle) {
+      let added = newVal.filter(title => oldVal.indexOf(title) === -1)
+      added.forEach(function (newTitle) {
         self.imdbGet(newTitle)
       })
+      let removed = oldVal.filter(title => newVal.indexOf(title) === -1)
+      for (var i = 0; i < self.titleData.length; i++) {
+        if (self.titleData[i].title === removed[0]) {
+          self.titleData.splice(i, 1)
+        }
+      }
     },
     calcColumns: function (event) {
       let self = this

@@ -36,7 +36,9 @@ export default [
   {
     name: 'My List',
     titles: [
-      // 'Inception',
+      'Almost Famous',
+      'Million Dollar Baby',
+      'There Will Be Blood'
       // 'Hugo',
       // 'The Life Aquatic With Steve Zissou',
       // 'Pulp Fiction',

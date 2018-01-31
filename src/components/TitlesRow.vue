@@ -255,9 +255,6 @@ $break-small: "850px";
         box-shadow: 2px 2px 3px 1px rgba(0,0,0,0.2);
         border-bottom-right-radius: 5px;
         @include transition(all, 0.2s)
-        span {
-          //opacity: 0;
-        }
         .fa-icon {
           margin-left: 6px;
           transform: translateY(26%);

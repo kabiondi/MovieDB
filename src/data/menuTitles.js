@@ -36,24 +36,30 @@ export default [
   {
     name: 'My List',
     titles: [
-      'Million Dollar Baby',
+      'Lady Bird',
       'There Will Be Blood',
       'Casino Royale',
-      'Monsters, Inc.',
-      'The Lord of the Rings: The Fellowship of the Ring',
+      'Okja',
+      'Dunkirk',
       'The Notebook',
-      'Avatar'
-      // 'Hugo',
-      // 'The Life Aquatic With Steve Zissou',
-      // 'Pulp Fiction',
-      // 'Lars and the Real Girl',
-      // 'Saving Private Ryan',
-      // 'About a Boy',
-      // 'Pirates of the Caribbean: The Curse of the Black Pearl',
-      // 'The Matrix',
-      // 'The Dark Knight',
-      // 'The Count of Monte Cristo',
-      // 'The Shawshank Redemption'
+      'Avatar',
+      'The Godfather'
+    ]
+  },
+  {
+    name: 'Suggested',
+    titles: [
+      'Hugo',
+      'The Life Aquatic With Steve Zissou',
+      'Pulp Fiction',
+      'Lars and the Real Girl',
+      'Saving Private Ryan',
+      'About a Boy',
+      'Pirates of the Caribbean: The Curse of the Black Pearl',
+      'The Matrix',
+      'The Dark Knight',
+      'The Count of Monte Cristo',
+      'The Shawshank Redemption'
     ]
   }
 ]

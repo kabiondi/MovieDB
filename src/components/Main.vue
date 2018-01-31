@@ -6,9 +6,6 @@
       <header class="menu">
         <ul>
           <li :class="{ active: showSearch === false }">Movies</li>
-          <!-- <li :class="{ active: activeHeroHeader === 'photos' }" @click="selectHeroHeader('photos')">Photo Gallery</li> -->
-          <!-- <li :class="{ active: activeHeroHeader === 'community' }" @click="selectHeroHeader('community')">Community</li> -->
-          <!-- <li :class="{ active: activeHeroHeader === 'news' }" @click="selectHeroHeader('news')">News</li> -->
           <li class="search-button" :class="{ active: showSearch === true }" @click.stop="toggleRevealSearch"><icon name="search"></icon>Search</li>
         </ul>
         <div class="search-wrapper" :class="{ active: showSearch === true }" @click.stop>
@@ -41,13 +38,10 @@
       <div class="menu bottom">
         <div class="inner">
           <ul>
-            <!-- <li :class="{ active: activeHeroSub === 'suggested' }" @click="selectHeroSub('suggested')">Suggested</li> -->
               <li :class="{ active: activeHeroSub === 'mylist' }" @click="selectHeroSub('mylist')">My List</li>
             <li :class="{ active: activeHeroSub === 'suggested' }" @click="selectHeroSub('suggested')">Suggested</li>
             <li :class="{ active: activeHeroSub === 'theaters' }" @click="selectHeroSub('theaters')">In Theaters</li>
             <li :class="{ active: activeHeroSub === 'coming' }" @click="selectHeroSub('coming')">Coming Soon</li>
-            <!-- <li :class="{ active: activeHeroSub === 'tv' }" @click="selectHeroSub('tv')">TV Series</li> -->
-            <!-- <li :class="{ active: activeHeroSub === 'trailers' }" @click="selectHeroSub('trailers')">Trailers</li> -->
             <li :class="{ active: activeHeroSub === 'more' }" @click="selectHeroSub('more')">More</li>
           </ul>
         </div>
@@ -55,7 +49,6 @@
     </div>
     <div class="titles">
       <div class="titles-transition"></div>
-      <!-- <template v-if="_menuCategory"> -->
       <template v-for="category in menuTitles">
         <titles-row v-show="_menuCategory === category" :category="category" :myList="_myList" @addToMyList="addToMyList" @removeFromMyList="removeFromMyList"></titles-row>
       </template>
@@ -187,7 +180,8 @@ export default {
     _menuCategory () {
       if (this.activeHeroSub === 'theaters') { return this.menuTitles[0] } else
       if (this.activeHeroSub === 'coming') { return this.menuTitles[1] } else
-      if (this.activeHeroSub === 'mylist') { return this.menuTitles[2] } else {
+      if (this.activeHeroSub === 'mylist') { return this.menuTitles[2] } else
+      if (this.activeHeroSub === 'suggested') { return this.menuTitles[3] } else {
         return false
       }
     },
